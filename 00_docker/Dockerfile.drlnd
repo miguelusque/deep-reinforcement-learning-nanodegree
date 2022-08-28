@@ -1,0 +1,18 @@
+
+FROM continuumio/miniconda3
+USER root
+
+ADD environment.yml /tmp/environment.yml
+RUN conda env create -f /tmp/environment.yml
+RUN conda update -n base -c defaults conda
+ENV PATH /opt/conda/envs/drlnd/bin:/usr/local/cuda/bin:/home/miguelm/.vscode-server/bin/0ba0ca52957102ca3527cf479571617f0de6ed50/bin:/usr/local/cuda/bin:/home/miguelm/.vscode-server/bin/0ba0ca52957102ca3527cf479571617f0de6ed50/bin:/home/miguelm/miniconda2/bin:/home/miguelm/miniconda2/condabin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games
+
+RUN sed -i '$ d' ~/.bashrc
+RUN echo "conda activate drlnd" >> ~/.bashrc
+RUN echo "jupyter notebook --ip=0.0.0.0 --no-browser  --allow-root --NotebookApp.token=''" >> ~/.bashrc
+
+EXPOSE 8888
+EXPOSE 8787
+EXPOSE 8786
+
+WORKDIR /drlnd
